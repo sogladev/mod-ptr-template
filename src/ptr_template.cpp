@@ -899,6 +899,10 @@ private:
             {
                 for (uint8 e = EQUIPMENT_SLOT_START; e < INVENTORY_SLOT_BAG_END; e++) // Iterate through equip slots.
                 {
+                    // Setting state to CHANGED is required here to avoid inventory save errors after using DestroyItem and EquipItem.
+                    // The error occurs because the item slot information is not updated correctly
+                    if (Item* item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, e))
+                        item->SetState(ITEM_CHANGED, player);
                     player->DestroyItem(INVENTORY_SLOT_BAG_0, e, true); // Kill.
                 }
             }
